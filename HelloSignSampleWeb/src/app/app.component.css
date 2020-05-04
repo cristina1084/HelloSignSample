@@ -1,0 +1,15 @@
+hr {
+    border: 1px solid black;
+}
+
+.input-position {
+    z-index: 0;
+}
+
+.badge-awaiting {
+    background-color: #00aadb;
+}
+
+.badge-success {
+    background-color: #a2bf00;
+}

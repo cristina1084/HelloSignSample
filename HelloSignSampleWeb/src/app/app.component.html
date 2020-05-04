@@ -1,0 +1,57 @@
+
+<p-toast></p-toast>
+<div class="container"><br><br>
+  <h1 style="text-align: center;">HelloSign Demo</h1> <br><br><br>
+  <div class="row">
+    <div class="col">
+      <tabset>
+        <tab heading="Create New Template" id="tab1"> <br>
+          <h3>
+            Upload a document
+          </h3> <br>
+          <div class="custom-file input-position">
+            <input type="file" name="myfile" class="custom-file-input" id="customFile" (change)="stageFile()" #fileInput>
+            <label for="customFile" class="custom-file-label" *ngIf="!staged">Choose File</label>
+            <label for="customFile" class="custom-file-label" *ngIf="staged">{{file?.name}}</label>
+            <br><br>
+          </div>
+          <button class="btn btn-success" type="button" (click)="createTemplate()">Upload</button>
+        </tab>
+        <tab heading="Fill & Send"> <br>
+          <h3>Form</h3> <br>
+            <form [formGroup]="leaseForm">  
+              <div formArrayName="customFields">
+                <div *ngFor="let elem of formTemplate; let i = index">
+                  <div class="form-group row" [formGroupName]="i">
+                    <label class="col-sm-2 col-form-label">{{elem.name}}</label>
+                    <div class="col-sm-10">
+                      <input type="{{elem.type}}" class="form-control" formControlName="value">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-success" type="button" (click)="sendTemplate(templateId)">Send</button>
+            </form> <br>
+        </tab>
+        <tab heading="Sign" (selectTab)="signatureRequest()"><br>
+          <h3>Signature Requests</h3> <br>
+          <table class="table table-borderless">
+            <tbody *ngFor="let signReq of signatureRequests">
+              <tr *ngFor="let sign of signReq.signatures">
+                <td>      
+                  <button class="btn btn-link" type="button" [disabled]="sign.statusCode == 'signed'" (click)="signTemplate(sign.signatureId)">{{sign.signerName}} - {{sign.signerRole}}</button> <br>
+                </td>
+                <td *ngIf="sign.statusCode == 'awaiting_signature'"><span class="badge badge-awaiting">Awaiting Signature</span></td>
+                <td *ngIf="sign.statusCode == 'signed'"><span class="badge badge-success">Completed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </tab>
+        <tab heading="View"><br>
+          <h3>View Document</h3> <br>
+          <button class="btn btn-link" *ngIf="signatureRequestId" type="button" (click)="viewSignedTemplate(signatureRequestId)">Download final document</button>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>
